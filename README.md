@@ -1,6 +1,6 @@
-# 
+# Wikipedia to LM_Dataformat
 
-Python script for creating [LM_Dataformat](https://github.com/leogao2/lm_dataformat) from a Mongo created with [wtf_wikipedia](https://github.com/spencermountain/wtf_wikipedia) and [dumpster-dive](https://github.com/spencermountain/dumpster-dive)
+Python script for creating [LM_Dataformat](https://github.com/leogao2/lm_dataformat) dataset from a Mongo created with [wtf_wikipedia](https://github.com/spencermountain/wtf_wikipedia) and [dumpster-dive](https://github.com/spencermountain/dumpster-dive)
 
 
 ## Instructions
