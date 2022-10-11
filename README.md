@@ -56,7 +56,7 @@ Wherever possible, we follow the methodology of [Wiki-40B: Multilingual Language
 - Sections like 'References', 'See Also', and 'Further Reading' are excluded.
 - Lists, Links, Images, Captions and Tables are excluded.
 - Disambiguation Pages and Redirect Pages are excluded.
-- As a proxy for removing Non-entity sections, we skip all articles that start with 'List of'. The majority of these articles are lists providing almost no text content (ex: [this](https://en.wikipedia.org/wiki/List_of_decades,_centuries,_and_millennia) and [this](https://en.wikipedia.org/wiki/List_of_cities_and_municipalities_in_the_Philippines))
+- As a proxy for removing Non-entity sections, we skip all articles that start with 'List of'. The majority of these articles are lists providing almost no text content (ex: [this](https://en.wikipedia.org/wiki/List_of_decades,_centuries,_and_millennia) and [this](https://en.wikipedia.org/wiki/List_of_cities_and_municipalities_in_the_Philippines) and [this](https://en.wikipedia.org/wiki/List_of_PC_games_(A)))
 - At the article level, we perform minimal formatting. Sections and paragraphs are joined together with ```\n\n``` and sections containing little (5 or fewer words) to no text content are skipped. 
 
 
