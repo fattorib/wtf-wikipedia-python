@@ -9,7 +9,7 @@ Python script for creating [LM_Dataformat](https://github.com/leogao2/lm_datafor
 
 0. Install [nodejs](https://nodejs.org/en/) (at least `v6`), [mongodb](https://docs.mongodb.com/manual/installation/) (at least `v3`)
 
-1. Install ```dumpster-dive```:
+1. **Install ```dumpster-dive```**:
 ```bash 
 # install this script
 npm install -g dumpster-dive # (that gives you the global command `dumpster`)
@@ -17,14 +17,17 @@ npm install -g dumpster-dive # (that gives you the global command `dumpster`)
 mongod --config /mypath/to/mongod.conf
 ```
 
-2. Install Python requirements:
+2. **Install Python requirements**:
 ```bash 
 pip install -r requirements
 ```
 
-3. Download and extract your copy of Wikitext. Make sure you have plenty of extra space when you do this. For the 20221006 dump, the uncompressed XML file is ~91GB! 
+3. **Download and extract your copy of Wikitext.** Make sure you have plenty of extra space when you do this. For the 20221006 dump, the uncompressed XML file is ~91GB! 
 
-4. Extract XML to Mongo:
+4. **Load the XML to Mongo:** 
+```bash 
+dumpster ./enwiki-latest-pages-articles.xml --plaintext=true --infoboxes=false --citations=false --categories=false --links=false
+```
 
 For our extract, we skip the following sections as they usually contain little-to-no actual text content:
 - infoboxes
@@ -33,13 +36,9 @@ For our extract, we skip the following sections as they usually contain little-t
 - citations
 - links
 
-```bash 
-dumpster ./enwiki-latest-pages-articles.xml --plaintext=true --infoboxes=false --citations=false --categories=false --links=false
-```
-
 On a modern desktop CPU this process takes around 90 minutes. 
 
-4. Stream data from Mongo to LM_Dataformat:
+4. **Stream data from Mongo to LM_Dataformat**:
 
 ```bash
 python stream_db.py
@@ -51,18 +50,23 @@ This process takes around 25 minutes.
 
 Quick Summary of content filtration used:
 
-Wherever possible, we follow the methodology of [Wiki-40B: Multilingual Language Model Dataset](https://aclanthology.org/2020.lrec-1.297/) by Guo et al. when filtering the extracted text:
+Wherever possible, article filtering follows the methodology of [Wiki-40B: Multilingual Language Model Dataset](https://aclanthology.org/2020.lrec-1.297/) by Guo et al:
 
-- Sections like 'References', 'See Also', and 'Further Reading' are excluded.
-- Lists, Links, Images, Captions and Tables are excluded.
-- Disambiguation Pages and Redirect Pages are excluded.
-- As a proxy for removing Non-entity sections, we skip all articles that start with 'List of'. The majority of these articles are lists providing almost no text content (ex: [this](https://en.wikipedia.org/wiki/List_of_decades,_centuries,_and_millennia) and [this](https://en.wikipedia.org/wiki/List_of_cities_and_municipalities_in_the_Philippines) and [this](https://en.wikipedia.org/wiki/List_of_PC_games_(A)))
-- At the article level, we perform minimal formatting. Sections and paragraphs are joined together with ```\n\n``` and sections containing little (5 or fewer words) to no text content are skipped. 
+- Sections like 'References', 'See Also', and 'Further Reading' are excluded from the dataset.
+- Lists, Links, Images, Captions and Tables are excluded from the dataset.
+- Disambiguation Pages and Redirect Pages are excluded from the dataset.
+
+There is also some additional filtration to filter out content that ```wtf_wikipedia``` doesnt filter for:
+- As a proxy for removing Non-entity sections in Guo et al, the majority of articles with titles starting with 'List of' are skipped. Most of these articles are lists providing almost no text content (ex: [this](https://en.wikipedia.org/wiki/List_of_decades,_centuries,_and_millennia) and [this](https://en.wikipedia.org/wiki/List_of_cities_and_municipalities_in_the_Philippines)). To catch cases where an article starts with 'List of' but still contains a significant of high-quality text (ex: [this](https://en.wikipedia.org/wiki/List_of_James_Bond_films) and [this](https://en.wikipedia.org/wiki/List_of_Marvel_Cinematic_Universe_films)), all 'List of' titles are filtered against Wikipedia's List of [Featured Lists](https://en.wikipedia.org/wiki/Wikipedia:Featured_lists) as these articles contain more content than just the list values themselves. See [here](https://en.wikipedia.org/wiki/Wikipedia:Featured_list_criteria) for the full criteria of a Featured List. 
+
+-  Sections containing 5 or fewer words to no text content are skipped as these sections are usually lists with some text preamble. 
+
+- At the article level, formatting follows PileV1 Wikipedia. Titles, sections and paragraphs are joined together with ```\n\n```. 
 
 
 
 ## Pile V2 Stats:
 
 - Wikipedia Dump Date: 2022-10-06
-- Number of Included Articles: 6098081
+- Number of Included Articles: x
 - Archive Size (Jsonlines): 15.8GB

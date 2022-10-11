@@ -89,6 +89,11 @@ if __name__ == '__main__':
     assert 'pages' in wiki.list_collection_names(), "Check to ensure Mongo is running!"
     data = wiki['pages']
 
+    with open('featured_lists.txt', 'r') as f:
+        featured_lists = f.read()
+    
+    featured_lists = featured_lists.split('\n')
+
     ar = Archive('enwiki_20221006_processed')
 
     # Articles that start with 'List of' are Wikimedia list articles. Ignore these as they contain 'real' no content
@@ -98,14 +103,20 @@ if __name__ == '__main__':
     for article_text in tqdm(data.find()):
         title = article_text['title']
         if re.match(pattern, title):
-            skipped += 1
-            continue
-        ar.add_data(process_raw_article_dump(article_text))
-        comitted += 1
+            if title in featured_lists:
+                ar.add_data(process_raw_article_dump(article_text))
+                comitted += 1
+            else:
+                skipped += 1
+                continue
+        else:
+            ar.add_data(process_raw_article_dump(article_text))
+            comitted += 1
 
     # remember to commit at the end!
     ar.commit()
     # DEBUG:__main__:Conversion Completed - Comitted Articles: 6098081 - Skipped Articles: 115504
+    # DEBUG:__main__:Conversion Completed - Comitted Articles: xxx - Skipped Articles: xxx
     logger.debug(f'Conversion Completed - Comitted Articles: {comitted} - Skipped Articles: {skipped}')
 
  
