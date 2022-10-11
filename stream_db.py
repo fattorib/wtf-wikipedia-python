@@ -115,8 +115,7 @@ if __name__ == '__main__':
 
     # remember to commit at the end!
     ar.commit()
-    # DEBUG:__main__:Conversion Completed - Comitted Articles: 6098081 - Skipped Articles: 115504
-    # DEBUG:__main__:Conversion Completed - Comitted Articles: xxx - Skipped Articles: xxx
+    #DEBUG:__main__:Conversion Completed - Comitted Articles: 6100633 - Skipped Articles: 112952
     logger.debug(f'Conversion Completed - Comitted Articles: {comitted} - Skipped Articles: {skipped}')
 
  

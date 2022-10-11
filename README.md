@@ -68,5 +68,5 @@ There is also some additional filtration to filter out content that ```wtf_wikip
 ## Pile V2 Stats:
 
 - Wikipedia Dump Date: 2022-10-06
-- Number of Included Articles: x
+- Number of Included Articles: 6100633
 - Archive Size (Jsonlines): 15.8GB
