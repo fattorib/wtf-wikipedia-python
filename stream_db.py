@@ -89,7 +89,7 @@ if __name__ == '__main__':
     assert 'pages' in wiki.list_collection_names(), "Check to ensure Mongo is running!"
     data = wiki['pages']
 
-    with open('featured_lists.txt', 'r') as f:
+    with open('featured_lists_20221006.txt', 'r') as f:
         featured_lists = f.read()
     
     featured_lists = featured_lists.split('\n')
